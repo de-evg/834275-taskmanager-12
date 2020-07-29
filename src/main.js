@@ -5,12 +5,12 @@ const siteMainElement = document.querySelector(`.main`);
 const siteMainControlElement = siteMainElement.querySelector(`.main__control`);
 
 const render = (container, template) => {
-    container.insertAdjacentHTML(`beforeend`, template);
+  container.insertAdjacentHTML(`beforeend`, template);
 };
 
 const createSiteMenuTemplate = () => {
-    return (
-        `<section class="control__btn-wrap">
+  return (
+    `<section class="control__btn-wrap">
           <input
             type="radio"
             name="control"
@@ -38,12 +38,12 @@ const createSiteMenuTemplate = () => {
             >STATISTICS</label
           >
         </section>`
-    );
+  );
 };
 
 const createFilterTemplate = () => {
-    return (
-        `<section class="main__filter filter container">
+  return (
+    `<section class="main__filter filter container">
         <input
           type="radio"
           id="filter__all"
@@ -102,37 +102,37 @@ const createFilterTemplate = () => {
           >Archive <span class="filter__archive-count">115</span></label
         >
       </section>`
-    );
+  );
 };
 
 const createBoardTemplate = () => {
-    return (
-        `<section class="board container">
+  return (
+    `<section class="board container">
         </section>`
-    );
+  );
 };
 
 const createSortTemplate = () => {
-    return (
-        `<div class="board__filter-list">
+  return (
+    `<div class="board__filter-list">
             <a href="#" class="board__filter">SORT BY DEFAULT</a>
             <a href="#" class="board__filter">SORT BY DATE up</a>
             <a href="#" class="board__filter">SORT BY DATE down</a>
         </div>`
-    );
+  );
 };
 
 const createTasksListTemplate = () => {
-    return (
-        ` <div class="board__tasks">
+  return (
+    ` <div class="board__tasks">
         </div>
         `
-    );
+  );
 };
 
 const createCardTemplate = () => {
-    return (
-        `<article class="card card--black">
+  return (
+    `<article class="card card--black">
         <div class="card__form">
           <div class="card__inner">
             <div class="card__control">
@@ -174,12 +174,12 @@ const createCardTemplate = () => {
           </div>
         </div>
       </article>`
-    );
+  );
 };
 
 const createCardEditTemplate = () => {
-    return (
-        `<article class="card card--edit card--yellow card--repeat">
+  return (
+    `<article class="card card--edit card--yellow card--repeat">
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__color-bar">
@@ -376,34 +376,34 @@ const createCardEditTemplate = () => {
           </div>
         </form>
       </article>`
-    );
+  );
 };
 
 const createLoadMoreBtnTemplate = () => {
-    return (
-        `<button class="load-more" type="button">load more</button>`
-    );
+  return (
+    `<button class="load-more" type="button">load more</button>`
+  );
 };
 
 const createLoadingMessageTemplate = () => {
-    return (
-        `<p class="board__no-tasks">
+  return (
+    `<p class="board__no-tasks">
             Loading...
         </p>`
-    );
+  );
 };
 
 const createNoTaskTemplate = () => {
-    return (
-        `<p class="board__no-tasks">
+  return (
+    `<p class="board__no-tasks">
             Click «ADD NEW TASK» in menu to create your first task
         </p>`
-    );
+  );
 };
 
 const createStatisticTemplate = () => {
-    return (
-        `<section class="statistic container">
+  return (
+    `<section class="statistic container">
             <div class="statistic__line">
             <div class="statistic__period">
                 <h2 class="statistic__period-title">Task Activity DIAGRAM</h2>
@@ -432,7 +432,7 @@ const createStatisticTemplate = () => {
             </div>
             </div>
         </section>`
-    );
+  );
 };
 
 render(siteMainControlElement, createSiteMenuTemplate());
@@ -445,7 +445,7 @@ render(boardElement, createTasksListTemplate());
 
 const tasksListElement = boardElement.querySelector(`.board__tasks`);
 for (let i = 0; i < CARD_COUNT; i++) {
-    render(tasksListElement, createCardTemplate());    
+  render(tasksListElement, createCardTemplate());
 }
 
 render(tasksListElement, createCardEditTemplate());
