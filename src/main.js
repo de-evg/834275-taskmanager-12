@@ -1,11 +1,11 @@
 'use strict';
 
 const CARD_COUNT = 3;
-const siteMainElement = document.querySelector('.main');
-const siteMainControlElement = siteMainElement.querySelector('.main__control');
+const siteMainElement = document.querySelector(`.main`);
+const siteMainControlElement = siteMainElement.querySelector(`.main__control`);
 
 const render = (container, template) => {
-    container.insertAdjacentHTML('beforeend', template);
+    container.insertAdjacentHTML(`beforeend`, template);
 };
 
 const createSiteMenuTemplate = () => {
@@ -439,11 +439,11 @@ render(siteMainControlElement, createSiteMenuTemplate());
 render(siteMainElement, createFilterTemplate());
 render(siteMainElement, createBoardTemplate());
 
-const boardElement = siteMainElement.querySelector('.board');
+const boardElement = siteMainElement.querySelector(`.board`);
 render(boardElement, createSortTemplate());
 render(boardElement, createTasksListTemplate());
 
-const tasksListElement = boardElement.querySelector('.board__tasks');
+const tasksListElement = boardElement.querySelector(`.board__tasks`);
 for (let i = 0; i < CARD_COUNT; i++) {
     render(tasksListElement, createCardTemplate());    
 }
