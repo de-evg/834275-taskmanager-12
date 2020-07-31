@@ -1,9 +1,9 @@
 const createTasksListTemplate = () => {
-    return (
-        ` <div class="board__tasks">
+  return (
+    ` <div class="board__tasks">
           </div>
           `
-    );
+  );
 };
 
-export { createTasksListTemplate };
+export {createTasksListTemplate};

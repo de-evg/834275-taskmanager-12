@@ -1,8 +1,8 @@
 const createBoardTemplate = () => {
-    return (
-        `<section class="board container">
+  return (
+    `<section class="board container">
           </section>`
-    );
+  );
 };
 
-export { createBoardTemplate };
+export {createBoardTemplate};

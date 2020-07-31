@@ -1,6 +1,6 @@
 const createStatisticTemplate = () => {
-    return (
-        `<section class="statistic container">
+  return (
+    `<section class="statistic container">
               <div class="statistic__line">
               <div class="statistic__period">
                   <h2 class="statistic__period-title">Task Activity DIAGRAM</h2>
@@ -29,7 +29,7 @@ const createStatisticTemplate = () => {
               </div>
               </div>
           </section>`
-    );
+  );
 };
 
-export { createStatisticTemplate };
+export {createStatisticTemplate};

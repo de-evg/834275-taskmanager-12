@@ -1,6 +1,6 @@
 const createCardEditTemplate = () => {
-    return (
-      `<article class="card card--edit card--yellow card--repeat">
+  return (
+    `<article class="card card--edit card--yellow card--repeat">
           <form class="card__form" method="get">
             <div class="card__inner">
               <div class="card__color-bar">
@@ -197,8 +197,7 @@ const createCardEditTemplate = () => {
             </div>
           </form>
         </article>`
-    );
-  };
+  );
+};
 
-  export {createCardEditTemplate};
-  
+export {createCardEditTemplate};
