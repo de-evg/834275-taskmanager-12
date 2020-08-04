@@ -34,20 +34,25 @@ const generateDate = () => {
   return new Date(currentDate);
 };
 
+const generateRepeating = () => {
+  return {
+    mo: false,
+    tu: false,
+    we: Boolean(Math.random() <= 0.5),
+    th: false,
+    fr: Boolean(Math.random() <= 0.5),
+    sa: false,
+    su: false
+  }
+}
+
 const generateTask = () => {
   const dueDate = generateDate();
+  const repeating = generateRepeating();
   return {
     description: generateDescription(),
     dueDate,
-    repeating: {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    },
+    repeating,
     color: `black`,
     isArchive: false,
     isFavorite: false
