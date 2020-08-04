@@ -50,7 +50,7 @@ const getRandomColor = () => {
   const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
   const randomIndex = getRandomInteger(0, colors.length - 1);
   return colors[randomIndex];
-}
+};
 
 const generateTask = () => {
   const dueDate = generateDate();

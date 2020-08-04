@@ -11,7 +11,7 @@ import {createNoTasksMessageTemplate} from "./view/no-tasks-message.js";
 import {createStatisticTemplate} from "./view/statistic.js";
 import {generateTask} from "./mock/task.js";
 
-const TASK_COUNT = 3;
+const TASK_COUNT = 6;
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 
@@ -31,11 +31,11 @@ render(boardElement, createSortTemplate());
 render(boardElement, createTasksListTemplate());
 
 const tasksListElement = boardElement.querySelector(`.board__tasks`);
-for (let i = 0; i < TASK_COUNT; i++) {
+render(tasksListElement, createCardEditTemplate(tasks[0]));
+for (let i = 1; i < TASK_COUNT; i++) {
   render(tasksListElement, createCardTemplate(tasks[i]));
 }
 
-render(tasksListElement, createCardEditTemplate());
 render(boardElement, createLoadMoreBtnTemplate());
 render(boardElement, createLoadingMessageTemplate());
 render(boardElement, createNoTasksMessageTemplate());

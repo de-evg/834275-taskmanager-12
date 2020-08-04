@@ -12,7 +12,7 @@ const isExpired = (dueDate) => {
 
 const isRepeating = (repeating) => {
   return Object.values(repeating).some(Boolean);
-}
+};
 
 const createCardTemplate = (task) => {
   const {color, description, dueDate, repeating, isArchive, isFavorite} = task;
