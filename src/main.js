@@ -10,9 +10,11 @@ import {createLoadingMessageTemplate} from "./view/loading-message.js";
 import {createNoTasksMessageTemplate} from "./view/no-tasks-message.js";
 import {createStatisticTemplate} from "./view/statistic.js";
 import {generateTask} from "./mock/task.js";
-console.log(generateTask());
 
-const CARD_COUNT = 3;
+const TASK_COUNT = 3;
+
+const tasks = new Array(TASK_COUNT).fill().map(generateTask);
+
 const siteMainElement = document.querySelector(`.main`);
 const siteMainControlElement = siteMainElement.querySelector(`.main__control`);
 
@@ -29,8 +31,8 @@ render(boardElement, createSortTemplate());
 render(boardElement, createTasksListTemplate());
 
 const tasksListElement = boardElement.querySelector(`.board__tasks`);
-for (let i = 0; i < CARD_COUNT; i++) {
-  render(tasksListElement, createCardTemplate());
+for (let i = 0; i < TASK_COUNT; i++) {
+  render(tasksListElement, createCardTemplate(tasks[i]));
 }
 
 render(tasksListElement, createCardEditTemplate());
