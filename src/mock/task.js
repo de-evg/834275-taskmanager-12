@@ -65,8 +65,8 @@ const generateTask = () => {
     dueDate,
     repeating,
     color: `black`,
-    isArchive: false,
-    isFavorite: false
+    isArchive: Boolean(Math.random() <= 0.5),
+    isFavorite: Boolean(Math.random() <= 0.5)
   };
 };
 
