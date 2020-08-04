@@ -43,12 +43,23 @@ const generateRepeating = () => {
     fr: Boolean(Math.random() <= 0.5),
     sa: false,
     su: false
-  }
-}
+  };
+};
 
 const generateTask = () => {
   const dueDate = generateDate();
-  const repeating = generateRepeating();
+  const repeating = dueDate === null
+    ? generateRepeating()
+    : {
+      mo: false,
+      tu: false,
+      we: false,
+      th: false,
+      fr: false,
+      sa: false,
+      su: false
+    };
+
   return {
     description: generateDescription(),
     dueDate,
