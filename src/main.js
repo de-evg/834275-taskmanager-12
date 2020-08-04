@@ -9,6 +9,8 @@ import {createLoadMoreBtnTemplate} from "./view/load-more-btn";
 import {createLoadingMessageTemplate} from "./view/loading-message.js";
 import {createNoTasksMessageTemplate} from "./view/no-tasks-message.js";
 import {createStatisticTemplate} from "./view/statistic.js";
+import {generateTask} from "./mock/task.js";
+console.log(generateTask());
 
 const CARD_COUNT = 3;
 const siteMainElement = document.querySelector(`.main`);

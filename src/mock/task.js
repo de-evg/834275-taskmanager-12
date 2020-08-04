@@ -17,10 +17,28 @@ const generateDescription = () => {
   return descriptions[randomIndex];
 };
 
-export const generateTask = () => {
+const generateDate = () => {
+  const isDate = Math.random() <= 0.5;
+
+  if (!isDate) {
+    return null;
+  }
+
+  const maxDaysGap = 7;
+  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
+  const currentDate = new Date();
+
+  currentDate.setHours(23, 59, 59, 999);
+  currentDate.setDate(currentDate.getDate() + daysGap);
+
+  return new Date(currentDate);
+};
+
+const generateTask = () => {
+  const dueDate = generateDate();
   return {
     description: generateDescription(),
-    dueDate: null,
+    dueDate,
     repeating: {
       mo: false,
       tu: false,
@@ -36,3 +54,4 @@ export const generateTask = () => {
   };
 };
 
+export {generateTask};
