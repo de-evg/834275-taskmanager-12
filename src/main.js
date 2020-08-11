@@ -1,14 +1,15 @@
 import SiteMenuView from "./view/site-menu.js";
 import {createFilterTemplate} from "./view/filter.js";
-import {createBoardTemplate} from "./view/board.js";
-import {createSortTemplate} from "./view/sort.js";
-import {createTasksListTemplate} from "./view/tasks-list.js";
-import {createTaskTemplate} from "./view/task.js";
-import {createTaskEditTemplate} from "./view/task-edit.js";
-import {createLoadMoreBtnTemplate} from "./view/load-more-btn";
-import {createLoadingMessageTemplate} from "./view/loading-message.js";
-import {createNoTasksMessageTemplate} from "./view/no-tasks-message.js";
-import {createStatisticTemplate} from "./view/statistic.js";
+import BoardView from "./view/board.js";
+import SortView from "./view/sort.js";
+import TaskListView from "./view/tasks-list.js";
+import TaskView from "./view/task.js";
+import TaskEditView from "./view/task-edit.js";
+import LoadMoreBtnView from "./view/load-more-btn";
+import LoadingView from "./view/loading-message.js";
+import NoTaskView from "./view/no-tasks-message.js";
+import StatisticView from "./view/statistic.js";
+
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
@@ -20,44 +21,53 @@ const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
 
 const siteMainElement = document.querySelector(`.main`);
-const siteMainControlElement = siteMainElement.querySelector(`.main__control`);
+const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
+const siteMenuComponent = new SiteMenuView();
+renderElement(siteHeaderElement, siteMenuComponent.getElement(), RenderPosition.BEFOREEND);
+renderTemplate(siteMainElement, createFilterTemplate(filters), RenderPosition.BEFOREEND);
 
-renderElement(siteMainControlElement, new SiteMenuView(), RenderPosition.BEFOREEND);
-renderTemplate(siteMainElement, createFilterTemplate(filters));
-renderTemplate(siteMainElement, createBoardTemplate());
+const boardComponent = new BoardView();
+renderElement(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
 
-const boardElement = siteMainElement.querySelector(`.board`);
-renderTemplate(boardElement, createSortTemplate());
-renderTemplate(boardElement, createTasksListTemplate());
+const sortComponent = new SortView();
+renderElement(boardComponent.getElement(), sortComponent.getElement(), RenderPosition.AFTERBEGIN);
 
-const tasksListElement = boardElement.querySelector(`.board__tasks`);
-renderTemplate(tasksListElement, createTaskEditTemplate(tasks[0]));
+const taskListComponent = new TaskListView();
+renderElement(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
+
+const taskEditComponent = new TaskEditView(tasks[0]);
+renderElement(taskListComponent.getElement(), taskEditComponent.getElement(), RenderPosition.BEFOREEND);
+
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderTemplate(tasksListElement, createTaskTemplate(tasks[i]));
+  renderElement(taskListComponent.getElement(), new TaskView(tasks[i]).getElement(), RenderPosition.BEFOREEND);
 }
-
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
   let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  renderTemplate(boardElement, createLoadMoreBtnTemplate());
+  const loadMoreBtnComponent = new LoadMoreBtnView();
+  renderElement(boardComponent.getElement(), loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
 
-  const loadMoreBtnElement = boardElement.querySelector(`.load-more`);
-
-  loadMoreBtnElement.addEventListener(`click`, (evt) => {
+  loadMoreBtnComponent.getElement().addEventListener(`click`, (evt) => {
     evt.preventDefault();
     tasks
       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => renderTemplate(tasksListElement, createTaskTemplate(task)));
+      .forEach((task) => renderElement(taskListComponent.getElement(), new TaskView(task).getElement(), RenderPosition.BEFOREEND));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
     if (renderedTaskCount >= tasks.length) {
-      loadMoreBtnElement.remove();
+      loadMoreBtnComponent.removeElement();
     }
   });
 }
-renderTemplate(boardElement, createLoadingMessageTemplate());
-renderTemplate(boardElement, createNoTasksMessageTemplate());
-renderTemplate(siteMainElement, createStatisticTemplate());
+
+const loadingMessageComponent = new LoadingView();
+renderElement(boardComponent.getElement(), loadingMessageComponent.getElement(), RenderPosition.BEFOREEND);
+
+const noTasksMessageComponent = new NoTaskView();
+renderElement(boardComponent.getElement(), noTasksMessageComponent.getElement(), RenderPosition.BEFOREEND);
+
+const statisticComponent = new StatisticView();
+renderElement(siteMainElement, statisticComponent.getElement(), RenderPosition.BEFOREEND);

@@ -73,5 +73,6 @@ export {
   humanizeTaskDueDate,
   renderElement,
   renderTemplate,
-  createElement
+  createElement,
+  RenderPosition
 };
