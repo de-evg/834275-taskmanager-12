@@ -3,7 +3,7 @@ const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
-const renderElement = (container, element, place) => {
+const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
@@ -71,7 +71,7 @@ export {
   isTaskExpiringToday,
   isTaskRepeating,
   humanizeTaskDueDate,
-  renderElement,
+  render,
   renderTemplate,
   createElement,
   RenderPosition

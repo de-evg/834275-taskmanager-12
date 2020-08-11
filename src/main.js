@@ -23,8 +23,33 @@ const filters = generateFilter(tasks);
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
+const renderTask = (taskListElement, task) => {
+  const taskComponent = new TaskView(task);
+  const taskEditComponent = new TaskEditView(task);
+
+  const replaceCardTOForm = () => {
+    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+  };
+
+  const replaceFormToCard = () => {
+    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+  };
+
+  taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    replaceCardTOForm();
+  });
+
+  taskEditComponent.getElement().querySelector(`form`).addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    replaceFormToCard();
+  });
+
+  render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const siteMenuComponent = new SiteMenuView();
 render(siteHeaderElement, siteMenuComponent.getElement(), RenderPosition.BEFOREEND);
+
 const filterComponent = new FilterView(filters);
 render(siteMainElement, filterComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -37,11 +62,8 @@ render(boardComponent.getElement(), sortComponent.getElement(), RenderPosition.A
 const taskListComponent = new TaskListView();
 render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-const taskEditComponent = new TaskEditView(tasks[0]);
-render(taskListComponent.getElement(), taskEditComponent.getElement(), RenderPosition.BEFOREEND);
-
-for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  render(taskListComponent.getElement(), new TaskView(tasks[i]).getElement(), RenderPosition.BEFOREEND);
+for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+  renderTask(taskListComponent.getElement(), tasks[i]);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
@@ -54,7 +76,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => render(taskListComponent.getElement(), new TaskView(task).getElement(), RenderPosition.BEFOREEND));
+      .forEach((task) => renderTask(taskListComponent.getElement(), task));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
