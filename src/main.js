@@ -1,5 +1,5 @@
 import SiteMenuView from "./view/site-menu.js";
-import {createFilterTemplate} from "./view/filter.js";
+import FilterView from "./view/filter.js";
 import BoardView from "./view/board.js";
 import SortView from "./view/sort.js";
 import TaskListView from "./view/tasks-list.js";
@@ -25,7 +25,8 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const siteMenuComponent = new SiteMenuView();
 renderElement(siteHeaderElement, siteMenuComponent.getElement(), RenderPosition.BEFOREEND);
-renderTemplate(siteMainElement, createFilterTemplate(filters), RenderPosition.BEFOREEND);
+const filterComponent = new FilterView(filters);
+renderElement(siteMainElement, filterComponent.getElement(), RenderPosition.BEFOREEND);
 
 const boardComponent = new BoardView();
 renderElement(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
