@@ -6,7 +6,6 @@ import TaskListView from "./view/tasks-list.js";
 import TaskView from "./view/task.js";
 import TaskEditView from "./view/task-edit.js";
 import LoadMoreBtnView from "./view/load-more-btn";
-import LoadingView from "./view/loading-message.js";
 import NoTaskView from "./view/no-tasks-message.js";
 import StatisticView from "./view/statistic.js";
 
@@ -57,8 +56,6 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-
-
 const siteMenuComponent = new SiteMenuView();
 render(siteHeaderElement, siteMenuComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -68,41 +65,38 @@ render(siteMainElement, filterComponent.getElement(), RenderPosition.BEFOREEND);
 const boardComponent = new BoardView();
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
 
-const sortComponent = new SortView();
-render(boardComponent.getElement(), sortComponent.getElement(), RenderPosition.AFTERBEGIN);
+if (tasks.every((task) => task.isArchive)) {
+  render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.BEFOREEND);
+} else {
+  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
+  const taskListComponent = new TaskListView();
+  render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-const taskListComponent = new TaskListView();
-render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
+  for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+    renderTask(taskListComponent.getElement(), tasks[i]);
+  }
 
-for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderTask(taskListComponent.getElement(), tasks[i]);
+  if (tasks.length > TASK_COUNT_PER_STEP) {
+    let renderedTaskCount = TASK_COUNT_PER_STEP;
+
+    const loadMoreBtnComponent = new LoadMoreBtnView();
+    render(boardComponent.getElement(), loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
+
+    loadMoreBtnComponent.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      tasks
+        .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+        .forEach((task) => renderTask(taskListComponent.getElement(), task));
+
+      renderedTaskCount += TASK_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= tasks.length) {
+        loadMoreBtnComponent.getElement().remove();
+        loadMoreBtnComponent.removeElement();
+      }
+    });
+  }
 }
-
-if (tasks.length > TASK_COUNT_PER_STEP) {
-  let renderedTaskCount = TASK_COUNT_PER_STEP;
-
-  const loadMoreBtnComponent = new LoadMoreBtnView();
-  render(boardComponent.getElement(), loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
-
-  loadMoreBtnComponent.getElement().addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    tasks
-      .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => renderTask(taskListComponent.getElement(), task));
-
-    renderedTaskCount += TASK_COUNT_PER_STEP;
-
-    if (renderedTaskCount >= tasks.length) {
-      loadMoreBtnComponent.removeElement();
-    }
-  });
-}
-
-const loadingMessageComponent = new LoadingView();
-render(boardComponent.getElement(), loadingMessageComponent.getElement(), RenderPosition.BEFOREEND);
-
-const noTasksMessageComponent = new NoTaskView();
-render(boardComponent.getElement(), noTasksMessageComponent.getElement(), RenderPosition.BEFOREEND);
 
 const statisticComponent = new StatisticView();
 render(siteMainElement, statisticComponent.getElement(), RenderPosition.BEFOREEND);
