@@ -1,7 +1,26 @@
-const createLoadMoreBtnTemplate = () => {
-  return (
-    `<button class="load-more" type="button">load more</button>`
-  );
-};
+import {createElement} from "../utils.js";
 
-export {createLoadMoreBtnTemplate};
+class LoadMoreBtn {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return (
+      `<button class="load-more" type="button">load more</button>`
+    );
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default LoadMoreBtn;
