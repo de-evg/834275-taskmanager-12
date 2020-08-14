@@ -1,8 +1,8 @@
-import {createElement} from "../utils.js";
+import AbtractView from "./abstract.js";
 
-class Filter {
+class Filter extends AbtractView {
   constructor(filters) {
-    this._element = null;
+    super();
     this._filters = filters;
   }
 
@@ -21,24 +21,20 @@ class Filter {
     >`;
   }
 
-  getTemplate(filterItems) {
+  createFilterTemplate(filterItems) {
     const filterItemsTemplate = filterItems
       .map((filter, index) => this.createFilterItemTemplate(filter, index === 0))
       .join(``);
 
     return (
       `<section class="main__filter filter container">
-      ${filterItemsTemplate}
-        </section>`
+    ${filterItemsTemplate}
+      </section>`
     );
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._filters));
-    }
-
-    return this._element;
+  getTemplate() {
+    return this.createFilterTemplate(this._filters);
   }
 }
 

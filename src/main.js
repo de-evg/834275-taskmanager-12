@@ -6,7 +6,7 @@ import TaskListView from "./view/tasks-list.js";
 import TaskView from "./view/task.js";
 import TaskEditView from "./view/task-edit.js";
 import LoadMoreBtnView from "./view/load-more-btn";
-import NoTaskView from "./view/no-tasks-message.js";
+import NoTaskView from "./view/no-tasks.js";
 import StatisticView from "./view/statistic.js";
 
 import {generateTask} from "./mock/task.js";

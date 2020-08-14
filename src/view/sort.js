@@ -1,10 +1,6 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
-class Sort {
-  constructor() {
-    this._element = null;
-  }
-
+class Sort extends AbstractView {
   getTemplate() {
     return (
       `<div class="board__filter-list">
@@ -13,17 +9,6 @@ class Sort {
         <a href="#" class="board__filter">SORT BY DATE down</a>
        </div>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

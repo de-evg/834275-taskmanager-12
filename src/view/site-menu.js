@@ -1,10 +1,6 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
-class SiteMenu {
-  constructor() {
-    this._element = null;
-  }
-
+class SiteMenu extends AbstractView {
   getTemplate() {
     return (
       `<section class="control__btn-wrap">
@@ -36,17 +32,6 @@ class SiteMenu {
               >
             </section>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removerElement() {
-    this._element = null;
   }
 }
 
