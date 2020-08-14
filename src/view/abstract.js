@@ -1,4 +1,4 @@
-import {createElement} from "../../../cinemaddict/src/utils";
+import {createElement} from "../utils/render";
 
 class Abstract {
   constructor() {
