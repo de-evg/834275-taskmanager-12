@@ -1,10 +1,11 @@
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
-import {createElement} from "../utils.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
+import AbstractView from "./abstract.js";
 
-class Task {
+class Task extends AbstractView {
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
@@ -71,12 +72,14 @@ class Task {
   </article>`;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
+  _clickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
+  }
 
-    return this._element;
+  setEditClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener(`click`, this._clickHandler);
   }
 }
 
