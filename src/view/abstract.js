@@ -6,6 +6,7 @@ class Abstract {
       throw new Error(`Can't instantaite Abstract? only cocrete one.`);
     }
     this._element = null;
+    this._callback = {};
   }
 
   getTemplate() {
