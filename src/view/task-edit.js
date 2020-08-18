@@ -141,7 +141,7 @@ class TaskEdit extends AbstractView {
 
   _submitHandler(evt) {
     evt.preventDefault();
-    this._callback.submit();
+    this._callback.submit(this._task);
   }
 
   setFormSubmitHandler(callback) {

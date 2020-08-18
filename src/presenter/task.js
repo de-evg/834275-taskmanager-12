@@ -1,15 +1,18 @@
 import TaskView from "../view/task.js";
 import TaskEditView from "../view/task-edit.js";
-import {render, RenderPosition, replace, remove} from "../utils.render.js";
+import {render, RenderPosition, replace, remove} from "../utils/render.js";
 
 class Task {
-  constructor(taskListContainer) {
+  constructor(taskListContainer, changeData) {
     this._taskListContainer = taskListContainer;
+    this._changeData = changeData;
 
     this._taskComponent = null;
-    this._taslEditComponent = null;
+    this._taskEditComponent = null;
 
-    this._handleEditCLick = this._handleEditClick.bind(this);
+    this._handleEditClick = this._handleEditClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleArchiveClick = this._handleArchiveClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
@@ -23,11 +26,13 @@ class Task {
     this._taskComponent = new TaskView(task);
     this._taskEditComponent = new TaskEditView(task);
 
-    this._taskComponent.setEditClickHandler(this._handleEditCLick);
+    this._taskComponent.setEditClickHandler(this._handleEditClick);
+    this._taskComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._taskComponent.setArchiveClickHandler(this._handleArchiveClick);
     this._taskEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
-      render(this.taskListContainer, this._taskComponent, RenderPosition.BEFOREEND);
+      render(this._taskListContainer, this._taskComponent, RenderPosition.BEFOREEND);
       return;
     }
 
@@ -69,7 +74,32 @@ class Task {
     this._replaceCardTOForm();
   }
 
-  _haldeFormToCard() {
+  _handleFavoriteClick() {
+    this._changeData(
+        Object.assign(
+            {},
+            this._task,
+            {
+              isFavorite: !this._task.isFavorite
+            }
+        )
+    );
+  }
+
+  _handleArchiveClick() {
+    this._changeData(
+        Object.assign(
+            {},
+            this._task,
+            {
+              isArchive: !this._task.isArchive
+            }
+        )
+    );
+  }
+
+  _handleFormSubmit(task) {
+    this._changeData(task);
     this._replaceFormToCard();
   }
 }
