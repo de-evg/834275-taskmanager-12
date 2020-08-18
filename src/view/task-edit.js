@@ -20,15 +20,15 @@ const BLANK_TASK = {
 class TaskEdit extends AbstractView {
   constructor(task = BLANK_TASK) {
     super();
-    this._task = task;
+    this.data = TaskEdit.parseTaskToData(task);
     this._submitHandler = this._submitHandler.bind(this);
   }
 
-  createCardEditDateTemplate(dueDate) {
+  createTaskEditDateTemplate(dueDate, isDueDate) {
     return (`<button class="card__date-deadline-toggle" type="button">
-    date: <span class="card__date-status">${dueDate !== null ? `yes` : `no`}</span>
+    date: <span class="card__date-status">${isDueDate ? `yes` : `no`}</span>
         </button>
-    ${dueDate !== null ? `<fieldset class="card__date-deadline">
+    ${isDueDate ? `<fieldset class="card__date-deadline">
     <label class="card__input-deadline-wrap">
       <input
         class="card__date"
@@ -41,7 +41,7 @@ class TaskEdit extends AbstractView {
   </fieldset>` : ``}`);
   }
 
-  createCardEditColorsTemplate(currentColor) {
+  createTaskEditColorsTemplate(currentColor) {
     return COLORS.map((color) => `<input
     type="radio"
     id="color-${color}"
@@ -57,20 +57,20 @@ class TaskEdit extends AbstractView {
   >`).join(``);
   }
 
-  createCardEditRepeatingTemplate(repeating) {
+  createTaskEditRepeatingTemplate(repeating, isRepeating) {
     return (`<button class="card__repeat-toggle" type="button">
-    repeat:<span class="card__repeat-status">${isTaskRepeating(repeating) ? `yes` : `no`}</span>
+    repeat:<span class="card__repeat-status">${isRepeating ? `yes` : `no`}</span>
   </button>
 
-  ${isTaskRepeating(repeating) ? `<fieldset class="card__repeat-days">
+  ${isRepeating ? `<fieldset class="card__repeat-days">
     <div class="card__repeat-days-inner">
-      ${Object.entries(repeating).map(([day, isRepeat]) => `<input
+      ${Object.entries(repeating).map(([day, repeat]) => `<input
         class="visually-hidden card__repeat-day-input"
         type="checkbox"
         id="repeat-${day}"
         name="repeat"
         value="${day}"
-        ${isRepeat ? `checked` : ``}
+        ${repeat ? `checked` : ``}
       />
       <label class="card__repeat-day" for="repeat-${day}"
         >${day}</label>`).join(``)};
@@ -79,18 +79,18 @@ class TaskEdit extends AbstractView {
   }
 
   getTemplate() {
-    const {color, description, dueDate, repeating} = this._task;
+    const {color, description, dueDate, repeating, isDueDate, isRepeating} = this._data;
     const deadlineClassName = isTaskExpired(dueDate)
       ? `card--deadline`
       : ``;
 
-    const dateTemplate = this.createCardEditDateTemplate(dueDate);
-    const repeatingClassName = isTaskRepeating(repeating)
+    const dateTemplate = this.createTaskEditDateTemplate(dueDate, isDueDate);
+    const repeatingClassName = isTaskRepeating(repeating, isRepeating)
       ? `card-repeat`
       : ``;
 
-    const repeatingTemplate = this.createCardEditRepeatingTemplate(repeating);
-    const colorsTemplate = this.createCardEditColorsTemplate(color);
+    const repeatingTemplate = this.createTaskEditRepeatingTemplate(repeating, isRepeating);
+    const colorsTemplate = this.createTaskEditColorsTemplate(color);
 
     return (
       `<article class="card card--edit card--${color} ${deadlineClassName} ${repeatingClassName}">
@@ -141,12 +141,37 @@ class TaskEdit extends AbstractView {
 
   _submitHandler(evt) {
     evt.preventDefault();
-    this._callback.submit(this._task);
+    this._callback.submit(TaskEdit.parseDataToTask(this._data));
   }
 
   setFormSubmitHandler(callback) {
     this._callback.submit = callback;
     this.getElement().addEventListener(`submit`, this._submitHandler);
+  }
+
+  static parseDataToTask(data) {
+    data = Object.assign({}, data);
+
+    if (!data.isDueDate) {
+      data.dueDate = null;
+    }
+
+    if (!data.isRepeating) {
+      data.repeating = {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false
+      };
+    }
+
+    delete data.isDueDate;
+    delete data.isRepeating;
+
+    return data;
   }
 }
 
