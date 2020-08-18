@@ -25,7 +25,7 @@ class TaskEdit extends AbstractView {
     this._submitHandler = this._submitHandler.bind(this);
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._dueDateToggleHandler = this._dueDateToggleHandler.bind(this);
-    this._repeatingTOggleHandler = this._repeatingToggleHandler.bind(this);
+    this._repeatingToggleHandler = this._repeatingToggleHandler.bind(this);
     this._repeatingChangeHandler = this._repeatingChangeHandler.bind(this);
     this._colorChangeHandler = this._colorChangeHandler.bind(this);
 
@@ -56,6 +56,20 @@ class TaskEdit extends AbstractView {
           this._data.repeating,
           {[evt.target.value]: evt.target.checked}
       )
+    });
+  }
+
+  _descriptionInputHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      description: evt.taget.value
+    }, true);
+  }
+
+  _colorChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      color: evt.target.value
     });
   }
 
@@ -230,13 +244,6 @@ class TaskEdit extends AbstractView {
     this.getElement()
       .querySelector(`.card__colors-wrap`)
       .addEventListener(`change`, this._repeatingChangeHandler);
-  }
-
-  _descriptionInputHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      description: evt.taget.value
-    }, true);
   }
 
   _submitHandler(evt) {
