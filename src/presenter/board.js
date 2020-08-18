@@ -24,6 +24,7 @@ class Board {
     this._noTaskComponent = new NoTaskView();
     this._loadMoreBtnComponent = new LoadMoreBtnView();
 
+    this.handleModeChange = this._handleModeChange.bind(this);
     this._handleTaskChange = this._handleTaskChange.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonCLick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
@@ -37,6 +38,12 @@ class Board {
     render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.resetView);
   }
 
   _handleTaskChange(updatedTask) {
