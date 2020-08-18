@@ -149,6 +149,17 @@ class TaskEdit extends AbstractView {
     this.getElement().addEventListener(`submit`, this._submitHandler);
   }
 
+  static parseTaskToData(task) {
+    return Object.assign(
+        {},
+        task,
+        {
+          isDueDate: task.dueDate !== null,
+          isRepeating: isTaskRepeating(task.repeating)
+        }
+    );
+  }
+
   static parseDataToTask(data) {
     data = Object.assign({}, data);
 
