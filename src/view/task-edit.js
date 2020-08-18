@@ -20,7 +20,7 @@ const BLANK_TASK = {
 class TaskEdit extends AbstractView {
   constructor(task = BLANK_TASK) {
     super();
-    this.data = TaskEdit.parseTaskToData(task);
+    this._data = TaskEdit.parseTaskToData(task);
     this._submitHandler = this._submitHandler.bind(this);
   }
 

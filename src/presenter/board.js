@@ -42,7 +42,7 @@ class Board {
   _handleTaskChange(updatedTask) {
     this._boardTasks = updateItem(this._boardTasks, updatedTask);
     this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedTask);
-    this.taskPresenter[updatedTask.id].init(updatedTask);
+    this._taskPresenter[updatedTask.id].init(updatedTask);
   }
 
   _handleSortTypeChange(sortType) {
