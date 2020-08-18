@@ -32,6 +32,12 @@ class TaskEdit extends SmartView {
     this._setInnerHandlers();
   }
 
+  reset(task) {
+    this.updateData(
+        TaskEdit.parseTaskToData(task)
+    );
+  }
+
   _dueDateToggleHandler(evt) {
     evt.preventDefault();
     this.updateData({
