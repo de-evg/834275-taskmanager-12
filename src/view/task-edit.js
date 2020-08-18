@@ -30,7 +30,7 @@ class TaskEdit extends AbstractView {
       .querySelector(`.card__date-deadline-toggle`)
       .addEventListener(`click`, this._dueDateToggleHandler);
     this.getElement()
-      .querySelector(`.car__repeat-toggle`)
+      .querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._repeatingToggleHandler);
   }
 
