@@ -6,6 +6,8 @@ class Task extends AbstractView {
     super();
     this._task = task;
     this._clickHandler = this._clickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._archiveClickHandler = this._archiveClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -18,7 +20,9 @@ class Task extends AbstractView {
       ? `card--deadline`
       : ``;
 
-    const repeatClassName = isTaskRepeating(repeating);
+    const repeatClassName = isTaskRepeating(repeating)
+      ? `card--repeat`
+      : ``;
 
     const archiveClassName = isArchive
       ? `card__btn--archive card__btn--disabled`
@@ -77,9 +81,29 @@ class Task extends AbstractView {
     this._callback.click();
   }
 
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  _archiveClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.archiveClick();
+  }
+
   setEditClickHandler(callback) {
     this._callback.click = callback;
-    this.getElement().addEventListener(`click`, this._clickHandler);
+    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, this._clickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setArchiveClickHandler(callback) {
+    this._callback.archiveClick = callback;
+    this.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, this._archiveClickHandler);
   }
 }
 

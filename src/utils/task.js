@@ -29,6 +29,9 @@ const isTaskRepeating = (repeating) => {
 };
 
 const humanizeTaskDueDate = (dueDate) => {
+  if (!dueDate) {
+    return ``;
+  }
   return dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`});
 };
 
