@@ -27,8 +27,8 @@ class Task {
   init(task) {
     this._task = task;
 
-    const prevTaskComponent = this._taskComponent;
-    const prevTaskEditComponent = this._taskEditComponent;
+    this._prevTaskComponent = this._taskComponent;
+    this._prevTaskEditComponent = this._taskEditComponent;
 
     this._taskComponent = new TaskView(task);
     this._taskEditComponent = new TaskEditView(task);
@@ -38,21 +38,21 @@ class Task {
     this._taskComponent.setArchiveClickHandler(this._handleArchiveClick);
     this._taskEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
-    if (prevTaskComponent === null || prevTaskEditComponent === null) {
+    if (this._prevTaskComponent === null || this._prevTaskEditComponent === null) {
       render(this._taskListContainer, this._taskComponent, RenderPosition.BEFOREEND);
       return;
     }
 
     if (this._mode === Mode.DEFAULT) {
-      replace(this._taskComponent, prevTaskComponent);
+      replace(this._taskComponent, this._prevTaskComponent);
     }
 
     if (this._mode === Mode.EDITING) {
-      replace(this._taskEditComponent, prevTaskComponent);
+      replace(this._taskEditComponent, this._prevTaskEditComponent);
     }
 
-    remove(prevTaskComponent);
-    remove(prevTaskEditComponent);
+    remove(this._prevTaskComponent);
+    remove(this._prevTaskEditComponent);
   }
 
   destroy() {
@@ -66,9 +66,11 @@ class Task {
     }
   }
 
-  _replaceCardTOForm() {
+  _replaceCardToForm() {
     replace(this._taskEditComponent, this._taskComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+    this._changeMode();
+    this._mode = Mode.EDITING;
   }
 
   _replaceFormToCard() {
@@ -86,7 +88,7 @@ class Task {
   }
 
   _handleEditClick() {
-    this._replaceCardTOForm();
+    this._replaceCardToForm();
   }
 
   _handleFavoriteClick() {

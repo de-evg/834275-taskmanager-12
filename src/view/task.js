@@ -20,7 +20,9 @@ class Task extends AbstractView {
       ? `card--deadline`
       : ``;
 
-    const repeatClassName = isTaskRepeating(repeating);
+    const repeatClassName = isTaskRepeating(repeating)
+      ? `card--repeat`
+      : ``;
 
     const archiveClassName = isArchive
       ? `card__btn--archive card__btn--disabled`
@@ -91,7 +93,7 @@ class Task extends AbstractView {
 
   setEditClickHandler(callback) {
     this._callback.click = callback;
-    this.getElement().addEventListener(`click`, this._clickHandler);
+    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, this._clickHandler);
   }
 
   setFavoriteClickHandler(callback) {

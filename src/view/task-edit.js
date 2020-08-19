@@ -218,7 +218,7 @@ class TaskEdit extends SmartView {
 
     this.getElement()
       .querySelector(`.card__colors-wrap`)
-      .addEventListener(`change`, this._repeatingChangeHandler);
+      .addEventListener(`change`, this._colorChangeHandler);
   }
 
   _submitHandler(evt) {
