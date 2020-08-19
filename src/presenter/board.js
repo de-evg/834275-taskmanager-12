@@ -5,7 +5,7 @@ import NoTaskView from "../view/no-tasks.js";
 import LoadMoreBtnView from "../view/load-more-btn";
 import TaskPresenter from "./task.js";
 import {updateItem} from "../utils/common.js";
-import {RenderPosition, render, remove, replace} from "../utils/render.js";
+import {RenderPosition, render, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
 import {SortType} from "../const.js";
 
@@ -92,7 +92,7 @@ class Board {
   _renderTask(task) {
     const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleTaskChange, this._handleModeChange);
     taskPresenter.init(task);
-    this._taskPresenter[task.id] = taskPresenter;    
+    this._taskPresenter[task.id] = taskPresenter;
   }
 
   _renderTasks(from, to) {
