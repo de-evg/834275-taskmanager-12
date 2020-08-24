@@ -1,5 +1,5 @@
 import {COLORS} from "../const.js";
-import {isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
+import {isTaskRepeating, formatTaskDueDate} from "../utils/task.js";
 import SmartView from "./smart.js";
 import flatpickr from "flatpickr";
 
@@ -49,7 +49,7 @@ class TaskEdit extends SmartView {
         type="text"
         placeholder=""
         name="date"
-        value="${humanizeTaskDueDate(dueDate)}"
+        value="${formatTaskDueDate(dueDate)}"
       />
     </label>
   </fieldset>` : ``}`);

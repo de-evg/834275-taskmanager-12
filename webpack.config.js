@@ -19,5 +19,8 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       }
     ]
-  }
+  },
+  plugins: [
+    new MomentLocalesPlugin()
+  ]
 };
