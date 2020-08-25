@@ -6,7 +6,8 @@ import LoadMoreBtnView from "../view/load-more-btn";
 import TaskPresenter from "./task.js";
 import {RenderPosition, render, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
-import {SortType} from "../const.js";
+import {SortType, UpdateType, UserAction} from "../const.js";
+import Sort from "../view/sort.js";
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -18,14 +19,14 @@ class Board {
     this._currentSortType = SortType.DEFAULT;
     this._taskPresenter = {};
 
+    this._sortComponent = null;
+    this._loadMoreBtnComponent = null;
     this._boardComponent = new BoardView();
-    this._sortComponent = new SortView();
     this._taskListComponent = new TaskListView();
     this._noTaskComponent = new NoTaskView();
-    this._loadMoreBtnComponent = new LoadMoreBtnView();
 
     this._handleModeChange = this._handleModeChange.bind(this);
-    this._handleViewActoin = this._handleViewActoin.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonCLick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
@@ -43,7 +44,7 @@ class Board {
   _getTasks() {
     switch (this._currentSortType) {
       case SortType.DATE_UP:
-        return this._tasksModel.getTasks().slice().sort(sortTaskUp);        
+        return this._tasksModel.getTasks().slice().sort(sortTaskUp);
       case SortType.DATE_DOWN:
         return this._tasksModel.getTasks().slice().sort(sortTaskDown);
       default:
@@ -58,11 +59,35 @@ class Board {
   }
 
   _handleViewAction(actionType, updateType, update) {
-
+    switch (actionType) {
+      case UserAction.UPDATE_TASK:
+        this._tasksModel.updateTask(updateType, update);
+        break;
+      case UserAction.ADD:
+        this._tasksModel.addTask(updateType, update);
+        break;
+      case UserAction.DELETE_TASK:
+        this._tasksModel.deleteTask(updateType, update);
+        break;
+      default:
+        break;
+    }
   }
 
   _handleModelEvent(updateType, data) {
-
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._taskPresenter[data.id].init(data);
+        break;
+      case UpdateType.MINOR:
+        this._clearBoard();
+        this._renderBoard();
+        break;
+      case UpdateType.MAJOR:
+        this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
+        this._renderBoard();
+        break;
+    }
   }
 
   _handleSortTypeChange(sortType) {
@@ -70,8 +95,8 @@ class Board {
       return;
     }
     this._currentSortType = sortType;
-    this._clearTaskList();
-    this._renderTaskList();
+    this._clearBoard({resetRenderedTaskCount: true});
+    this._renderBoard();
   }
 
   _sortTasks(sortType) {
@@ -91,8 +116,14 @@ class Board {
   }
 
   _renderSort() {
-    render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);    
   }
 
   _clearTaskList() {
@@ -100,6 +131,29 @@ class Board {
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.destroy());
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
+  }
+
+  _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
+    const taskCount = this._getTasks().length;
+
+    Object
+      .values(this._takPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._taskPresenter = {};
+
+    remove(this._sortComponent);
+    remove(this._noTaskComponent);
+    remove(this._loadMoreBtnComponent);
+
+    if (resetRenderedTaskCount) {
+      this._renderedTaskCount = TASK_COUNT_PER_STEP;
+    } else {
+      this._renderedTaskCOunt = Math.min(taskCount, this._renderedTaskCount);
+    }
+
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
   }
 
   _renderTask(task) {
@@ -130,8 +184,14 @@ class Board {
   }
 
   _renderLoadMoreButton() {
-    render(this._boardComponent, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+    if (this._loadMoreBtnComponent !== null) {
+      this._loadMoreBtnComponent = null;
+    }
+
+    this._loadMoreBtnComponent = new LoadMoreBtnView();
     this._loadMoreBtnComponent.setClickHandler(this._handleLoadMoreButtonClick);
+
+    render(this._boardComponent, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);    
   }
 
   _renderTaskList() {
@@ -145,13 +205,22 @@ class Board {
     }
   }
 
-  _renderBoard() {
-    if (this._getTasks.every((task) => task.isArchive)) {
+  _renderBoard() {   
+    const tasks = this._getTasks();
+    const taskCount = tasks.length;
+
+    if (taskCount === 0) {
       this._renderNoTasks();
+      return;
     }
 
     this._renderSort();
-    this._renderTaskList();
+
+    this._renderTasks(tasks.slice(0, Math.min(taskCount, this._renderedTaskCount)));
+
+    if (taskCount > this._renderedTaskCount) {
+      this._renderLoadMoreButton();
+    }
   }
 }
 

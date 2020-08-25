@@ -59,6 +59,10 @@ const replace = (newChild, oldChild) => {
 };
 
 const remove = (component) => {
+  if (component === null) {
+    return;
+  }
+
   if (component instanceof Abstract) {
     component.getElement().remove();
     component.removeElement();
