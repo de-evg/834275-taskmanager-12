@@ -126,13 +126,6 @@ class Board {
     render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);    
   }
 
-  _clearTaskList() {
-    Object
-      .values(this._taskPresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._renderedTaskCount = TASK_COUNT_PER_STEP;
-  }
-
   _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this._getTasks().length;
 
@@ -192,17 +185,6 @@ class Board {
     this._loadMoreBtnComponent.setClickHandler(this._handleLoadMoreButtonClick);
 
     render(this._boardComponent, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);    
-  }
-
-  _renderTaskList() {
-    const taskCount = this._getTasks().length;
-    const tasks = this._getTasks().slice(0, Math.min(taskCount, TASK_COUNT_PER_STEP));
-
-    this._renderTasks(tasks);
-
-    if (taskCount > TASK_COUNT_PER_STEP) {
-      this._renderLoadMoreButton();
-    }
   }
 
   _renderBoard() {   
