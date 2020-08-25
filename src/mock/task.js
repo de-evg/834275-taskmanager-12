@@ -74,4 +74,4 @@ const generateTask = () => {
   };
 };
 
-export {generateTask};
+export {generateTask, generateId};

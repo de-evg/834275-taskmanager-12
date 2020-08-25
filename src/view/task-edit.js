@@ -33,7 +33,7 @@ class TaskEdit extends SmartView {
     this._dueDateChangeHandler = this._dueDateChangeHandler.bind(this);
     this._repeatingToggleHandler = this._repeatingToggleHandler.bind(this);
     this._repeatingChangeHandler = this._repeatingChangeHandler.bind(this);
-    this._colorChangeHandler = this._colorChangeHandler.bind(this);
+    this._colorChangeHandler = this._colorChangeHandler.bind(this);    
 
     this._setInnerHandlers();
     this._setDatepicker();
@@ -175,7 +175,7 @@ class TaskEdit extends SmartView {
   }
 
   setDeleteClickHandler(callback) {
-    this._callback.deleteClick = callback;    
+    this._callback.deleteClick = callback;
     this.getElement().querySelector(`.card__delete`).addEventListener(`click`, this._deleteClickHandler);
   }
 

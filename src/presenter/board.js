@@ -3,10 +3,13 @@ import SortView from "../view/sort.js";
 import TaskListView from "../view/tasks-list.js";
 import NoTaskView from "../view/no-tasks.js";
 import LoadMoreBtnView from "../view/load-more-btn";
+
 import TaskPresenter from "./task.js";
+import TaskNewPresenter from "./task-new.js";
+
 import {RenderPosition, render, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
-import {SortType, UpdateType, UserAction} from "../const.js";
+import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
 import {filter} from "../utils/filter.js";
 
 const TASK_COUNT_PER_STEP = 8;
@@ -34,6 +37,8 @@ class Board {
 
     this._tasksModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+
+    this._taskNewPresenter = new TaskNewPresenter(this._taskListComponent, this._handleViewAction);
   }
 
   init() {
@@ -41,6 +46,12 @@ class Board {
     render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  createTask() {
+    this._currentSortType = SortType.DEFAULT;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
+    this._taskNewPresenter.init();
   }
 
   _getTasks() {
@@ -58,6 +69,7 @@ class Board {
   }
 
   _handleModeChange() {
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.resetView);
@@ -128,12 +140,13 @@ class Board {
     this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
-    render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);    
+    render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this._getTasks().length;
 
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.destroy());
@@ -189,10 +202,10 @@ class Board {
     this._loadMoreBtnComponent = new LoadMoreBtnView();
     this._loadMoreBtnComponent.setClickHandler(this._handleLoadMoreButtonClick);
 
-    render(this._boardComponent, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);    
+    render(this._boardComponent, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
   }
 
-  _renderBoard() {   
+  _renderBoard() {
     const tasks = this._getTasks();
     const taskCount = tasks.length;
 

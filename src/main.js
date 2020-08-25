@@ -28,4 +28,10 @@ const filterPresenter = new FilterPresenter(siteMainElement, filterModel, tasksM
 render(siteHeaderElement, new SiteMenuView(), RenderPosition.BEFOREEND);
 filterPresenter.init();
 boardPresenter.init();
+
+document.querySelector(`#control__new-task`).addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  boardPresenter.createTask();
+});
+
 render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
