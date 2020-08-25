@@ -1,13 +1,13 @@
-import Observer from "../utils/oserver.js";
+import Observer from "../utils/observer.js";
 import {FilterType} from "../const.js";
 
 class Filter extends Observer {
   constructor() {
     super();
-    this._activeFilter = FIlterType.All;
+    this._activeFilter = FilterType.All;
   }
 
-  setFilter(uppdateType, filter) {
+  setFilter(updateType, filter) {
     this._activeFilter = filter;
     this._notify(updateType, filter);
   }
