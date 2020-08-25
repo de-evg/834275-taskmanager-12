@@ -129,7 +129,7 @@ class Task {
       isTaskRepeating(this._task) !== isTaskRepeating(update);
 
     this._changeData(
-        UpdateType.MINOR,
+        UpdateType.UPDATE_TASK,
         isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
         update
     );
@@ -142,7 +142,6 @@ class Task {
         UpdateType.MINOR,
         task
     );
-    this._replaceFormToCard();
   }
 }
 
