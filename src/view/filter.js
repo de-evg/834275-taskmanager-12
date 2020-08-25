@@ -1,29 +1,31 @@
 import AbtractView from "./abstract.js";
 
 class Filter extends AbtractView {
-  constructor(filters) {
+  constructor(filters, currentFilterType) {
     super();
     this._filters = filters;
+    this._currentFilterType = currentFilterType;
   }
 
-  createFilterItemTemplate(filter, isChecked) {
-    const {name, count} = filter;
+  createFilterItemTemplate(filter, currentFilterType) {
+    const {type, name, count} = filter;
     return `<input
       type="radio"
       id="filter__${name}"
       class="filter__input visually-hidden"
       name="filter"
-      ${isChecked ? `checked` : ``}
-      ${count === 0 ? `disabled` : ``}      
+      ${type === currentFilterType ? `checked` : ``}
+      ${count === 0 ? `disabled` : ``}  
+      value="${type}"    
     />
     <label for="filter__${name}" class="filter__label">
       ${name} <span class="filter__${name}-count">${count}</span></label
     >`;
   }
 
-  createFilterTemplate(filterItems) {
+  createFilterTemplate(filterItems, currentFilterType) {
     const filterItemsTemplate = filterItems
-      .map((filter, index) => this.createFilterItemTemplate(filter, index === 0))
+      .map((filter) => this.createFilterItemTemplate(filter, currentFilterType))
       .join(``);
 
     return (
@@ -34,7 +36,17 @@ class Filter extends AbtractView {
   }
 
   getTemplate() {
-    return this.createFilterTemplate(this._filters);
+    return this.createFilterTemplate(this._filters, this._currentFilterType);
+  }
+
+  _filterTypeChangeHandler(evt) {
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.value);
+  }
+
+  setFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._filterTypeChangeHandler);
   }
 }
 
