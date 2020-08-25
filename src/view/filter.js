@@ -5,6 +5,7 @@ class Filter extends AbtractView {
     super();
     this._filters = filters;
     this._currentFilterType = currentFilterType;
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   createFilterItemTemplate(filter, currentFilterType) {
@@ -46,7 +47,7 @@ class Filter extends AbtractView {
 
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener(`click`, this._filterTypeChangeHandler);
+    this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
   }
 }
 

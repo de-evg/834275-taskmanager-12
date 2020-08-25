@@ -4,7 +4,7 @@ import {FilterType} from "../const.js";
 class Filter extends Observer {
   constructor() {
     super();
-    this._activeFilter = FilterType.All;
+    this._activeFilter = FilterType.ALL;
   }
 
   setFilter(updateType, filter) {
