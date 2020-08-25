@@ -175,8 +175,8 @@ class TaskEdit extends SmartView {
   }
 
   setDeleteClickHandler(callback) {
-    this._callback.deleteClick = callback;
-    this.getElement().querySelector(`.card__delete`).addEventListener(`click`, this._formDeleteClickHandler);
+    this._callback.deleteClick = callback;    
+    this.getElement().querySelector(`.card__delete`).addEventListener(`click`, this._deleteClickHandler);
   }
 
   setFormSubmitHandler(callback) {

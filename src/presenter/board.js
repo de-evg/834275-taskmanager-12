@@ -150,7 +150,7 @@ class Board {
   }
 
   _renderTask(task) {
-    const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleViewACtion, this._handleModeChange);
+    const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleViewAction, this._handleModeChange);
     taskPresenter.init(task);
     this._taskPresenter[task.id] = taskPresenter;
   }
