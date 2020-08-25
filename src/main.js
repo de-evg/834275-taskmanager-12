@@ -1,6 +1,6 @@
 import BoardPresenter from "./presenter/board.js";
 
-import TasksModel from "./model/tasks.js";
+import TasksModel from "./models/tasks.js";
 
 import SiteMenuView from "./view/site-menu.js";
 import FilterView from "./view/filter.js";

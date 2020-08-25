@@ -137,7 +137,7 @@ class Board {
     const taskCount = this._getTasks().length;
 
     Object
-      .values(this._takPresenter)
+      .values(this._taskPresenter)
       .forEach((presenter) => presenter.destroy());
     this._taskPresenter = {};
 
