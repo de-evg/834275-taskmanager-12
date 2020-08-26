@@ -91,7 +91,7 @@ class Board {
       case UserAction.UPDATE_TASK:
         this._tasksModel.updateTask(updateType, update);
         break;
-      case UserAction.ADD:
+      case UserAction.ADD_TASK:
         this._tasksModel.addTask(updateType, update);
         break;
       case UserAction.DELETE_TASK:
