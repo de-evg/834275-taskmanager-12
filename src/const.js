@@ -25,6 +25,12 @@ const FilterType = {
   FAVORITES: `favorites`,
   REPEATING: `repeating`,
   ARCHIVE: `archive`
-}
+};
 
-export {COLORS, SortType, UserAction, UpdateType, FilterType};
+const MenuItem = {
+  ADD_NEW_TASK: `ADD_NEW_TASK`,
+  TASKS: `TASKS`,
+  STATISTIC: `STATISTIC`
+};
+
+export {COLORS, SortType, UserAction, UpdateType, FilterType, MenuItem};

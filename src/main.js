@@ -7,6 +7,7 @@ import FilterModel from "./models/filter.js";
 import SiteMenuView from "./view/site-menu.js";
 import StatisticView from "./view/statistic.js";
 
+import {MenuItem} from "./const.js";
 import {generateTask} from "./mock/task.js";
 
 import {RenderPosition, render} from "./utils/render.js";
@@ -21,11 +22,31 @@ const filterModel = new FilterModel();
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+const siteMenuComponent = new SiteMenuView();
 
 const boardPresenter = new BoardPresenter(siteMainElement, tasksModel, filterModel);
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, tasksModel);
 
-render(siteHeaderElement, new SiteMenuView(), RenderPosition.BEFOREEND);
+const handleSiteMenuCLick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.ADD_NEW_TASK:
+      //показать доску
+      //скрыть статистику
+      break;
+    case MenuItem.TASKS:
+      //показать доску
+      //скрыть статистику
+      break;
+    case MenuItem.STATISTIC:
+      //скрыть доску
+      //показать статистику
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuCLick);
+
+render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
 filterPresenter.init();
 boardPresenter.init();
 
