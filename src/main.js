@@ -10,7 +10,7 @@ import StatisticView from "./view/statistic.js";
 import {MenuItem, UpdateType, FilterType} from "./const.js";
 import {generateTask} from "./mock/task.js";
 
-import {RenderPosition, render} from "./utils/render.js";
+import {RenderPosition, render, remove} from "./utils/render.js";
 
 const TASK_COUNT = 22;
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
@@ -31,9 +31,12 @@ const handleTaskNewFormClose = () => {
   siteMenuComponent.setMenuItem(MenuItem.TASKS);
 };
 
+let statisticsComponent = null;
+
 const handleSiteMenuCLick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.ADD_NEW_TASK:
+      remove(statisticsComponent);
       boardPresenter.destroy();
       filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
       boardPresenter.init();
@@ -41,11 +44,12 @@ const handleSiteMenuCLick = (menuItem) => {
       break;
     case MenuItem.TASKS:
       boardPresenter.init();
-      //скрыть статистику
+      remove(statisticsComponent);
       break;
     case MenuItem.STATISTIC:
       boardPresenter.destroy();
-      //показать статистику
+      statisticsComponent = new StatisticView(tasksModel.getTasks());
+      render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
@@ -55,5 +59,3 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuCLick);
 render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
 filterPresenter.init();
 boardPresenter.init();
-
-render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
