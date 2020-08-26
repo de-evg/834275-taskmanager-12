@@ -45,7 +45,7 @@ class SiteMenu extends AbstractView {
 
   _menuClickHandler(evt) {
     evt.preventDefault();
-    this._callback.menuClick();
+    this._callback.menuClick(evt.target.value);
   }
 
   setMenuClickHandler(callback) {
@@ -54,7 +54,7 @@ class SiteMenu extends AbstractView {
   }
 
   setMenuItem(menuItem) {
-    const item = this.getElement().querySelector(`[value]=${menuItem}`);
+    const item = this.getElement().querySelector(`[value=${menuItem}]`);
 
     if (item !== null) {
       item.checked = true;
